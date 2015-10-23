@@ -1,0 +1,155 @@
+<html>
+	<head>
+		<title>Esfera</title>
+		<style>
+			body { margin: 0; }
+			canvas { width: 100%; height: 100% }
+		</style>
+	</head>
+	<body>
+		<script src="../js/three.min.js"></script>
+		<script src="../js/SphereGeometry.js"></script>
+		<script src="../js/lights/DirectionalLight.js"></script>
+		<script src="../js/OrbitControls.js"></script>
+		<script src="../js/Detector.js"></script>
+		<script src="../js/stats.min.js"></script>
+		<script src="../js/EllipseCurve.js"></script>
+		<script src="../js/Material.js"></script>
+		<script src="../js/MeshPhongMaterial.js"></script>
+		<script src="../js/Texture.js"></script>
+		<script>
+					
+
+					//agregar parametro tamano
+					function createLight( color , tamano ) {  //Funcion crear PLANETA
+
+					var planeta = new THREE.PointLight( color, 1, 30 );
+					planeta.castShadow = true;
+					planeta.shadowCameraNear = 1;
+					planeta.shadowCameraFar = 30;
+					planeta.shadowCameraVisible = true;
+					planeta.shadowMapWidth = 2048;
+					planeta.shadowMapHeight = 1024;
+					planeta.shadowBias = 0.01;
+					planeta.shadowDarkness = 0.5;
+
+					var forma = new THREE.SphereGeometry( tamano , 32, 32 );
+					var material = new THREE.MeshPhongMaterial( { color: color , emissive: color, shininess:50, specular:0xfae1e1} );
+					var planet = new THREE.Mesh( forma, material );
+					planeta.add( planet );
+
+					return planeta
+				}
+
+					function createOrbit(x, y){
+					var curve = new THREE.EllipseCurve(	0,  0, x, y, 0,  2 * Math.PI,false,0);
+					var path = new THREE.Path( curve.getPoints( 50 ) );
+					var geometry3 = path.createPointsGeometry( 50 );
+					var material3 = new THREE.MeshPhongMaterial( { color : 0xf7dc0e , opacity: 0.25, emissive:0xf7dc0e ,transparent: true} );
+					var ellipse = new THREE.Line( geometry3, material3 );
+					return ellipse;
+
+				}
+
+			var scene = new THREE.Scene();
+			var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
+
+			var renderer = new THREE.WebGLRenderer();
+			renderer.setSize( window.innerWidth, window.innerHeight );
+			document.body.appendChild( renderer.domElement );
+
+			var material2 = new THREE.MeshPhongMaterial( { color: 0xf07f00, emissive: 0xFF0000, shininess:50, specular:0xfae1e1 } );
+			var material = new THREE.MeshBasicMaterial( { color: 0xFB9B0A } );
+			var geometry2 = new THREE.SphereGeometry( 5, 32, 32 ); 
+			var mundo = new THREE.Mesh( geometry2, material2 );
+			
+
+
+			ellipse1 = createOrbit(10,6);
+			ellipse2 = createOrbit(20,12);
+			ellipse3 = createOrbit(30,18);
+			ellipse4 = createOrbit(40,24);
+			ellipse5 = createOrbit(45,27);
+			ellipse6 = createOrbit(55,33);
+			ellipse7 = createOrbit(65,39);
+
+
+			scene.add( mundo );
+
+			//declaracion de planeta (color , diametro)
+			planeta1 = createLight( 0xffffff , 0.75 );
+			planeta2 = createLight( 0xff00ff , 1 );
+			planeta3 = createLight( 0x0AFB32 , 2.5 );
+			planeta4 = createLight( 0xC91515 , 1);	
+			planeta5 = createLight( 0x00aaff , 0.5 );
+			planeta6 = createLight( 0x8D15C9 , 3.5 );
+			planeta7 = createLight( 0x52380E , 1.5 );
+			
+
+
+			//agrego orbitas
+			mundo.add(ellipse1);
+			mundo.add(ellipse2);
+			mundo.add(ellipse3);
+			mundo.add(ellipse4);
+			mundo.add(ellipse5);
+			mundo.add(ellipse6);
+			mundo.add(ellipse7);
+
+			//agrego planetas
+			mundo.add(planeta1);
+			mundo.add(planeta2);
+			mundo.add(planeta3);
+			mundo.add(planeta4);
+			mundo.add(planeta5);
+			mundo.add(planeta6);
+			mundo.add(planeta7);
+
+			camera.position.z = 70;
+			var u = 0.0001 ;		
+			var render = function () {
+				requestAnimationFrame( render );
+				u = u + 0.01 ;
+
+				mundo.rotation.x = mundo.rotation.x + 0.005;
+
+				
+				planeta1.position.x = 10 * Math.cos(10*u);
+				planeta1.position.y = 6 * Math.sin(10*u);
+				//planeta1.position.z = 7 * Math.sin(10*u);	
+				
+				
+				planeta2.position.x =  20 * Math.cos(5*u);
+				planeta2.position.y =  12 * Math.sin(5*u);
+				//planeta2.position.z =  10 * Math.sin(5*u);	
+				
+				
+				planeta3.position.x =  30 * Math.cos(u);
+				planeta3.position.y =  18 * Math.sin(u);
+				//planeta3.position.z =  15 * Math.sin(u);	
+				
+				
+				planeta4.position.x = 40 * Math.cos(3*u);  
+				planeta4.position.y = 24 * Math.sin(3*u);
+				//planeta4.position.z = 20 * Math.sin(3*u);
+
+
+				planeta5.position.x = 45 * Math.cos(4*u);  
+				planeta5.position.y = 27 * Math.sin(4*u);
+				//planeta5.position.z = 25 * Math.sin(4*u);
+
+				planeta6.position.x = 55 * Math.cos(2*u);  
+				planeta6.position.y = 33 * Math.sin(2*u);
+				//planeta5.position.z = 25 * Math.sin(4*u);
+
+				planeta7.position.x = 65 * Math.cos(u);  
+				planeta7.position.y = 39 * Math.sin(u);
+				//planeta5.position.z = 25 * Math.sin(4*u);
+
+				renderer.render(scene, camera);
+			};
+			
+			render();
+		</script>
+	</body>
+</html>
