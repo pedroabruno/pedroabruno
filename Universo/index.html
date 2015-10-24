@@ -72,6 +72,7 @@
 			ellipse5 = createOrbit(45,27);
 			ellipse6 = createOrbit(55,33);
 			ellipse7 = createOrbit(65,39);
+			ellipse8 = createOrbit(2,2);
 
 
 			scene.add( mundo );
@@ -84,10 +85,12 @@
 			planeta5 = createLight( 0x00aaff , 0.5 );
 			planeta6 = createLight( 0x8D15C9 , 3.5 );
 			planeta7 = createLight( 0x52380E , 1.5 );
-			
+			luna1=createLight(0xffffff , 0.25);
 
 
 			//agrego orbitas
+			ellipse8.add(luna1);
+			planeta7.add(ellipse8);
 			mundo.add(ellipse1);
 			mundo.add(ellipse2);
 			mundo.add(ellipse3);
@@ -104,6 +107,7 @@
 			mundo.add(planeta5);
 			mundo.add(planeta6);
 			mundo.add(planeta7);
+
 
 			camera.position.z = 70;
 			var u = 0.0001 ;		
@@ -146,6 +150,8 @@
 				planeta7.position.y = 39 * Math.sin(u);
 				//planeta5.position.z = 25 * Math.sin(4*u);
 
+				luna1.position.x = ellipse8.position.x + 2*Math.cos(10*u);
+				luna1.position.y = ellipse8.position.y + 2*Math.sin(10*u);
 				renderer.render(scene, camera);
 			};
 			
