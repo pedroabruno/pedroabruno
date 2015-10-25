@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title>Esfera</title>
+		<title>Universo</title>
 		<style>
 			body { margin: 0; }
 			canvas { width: 100%; height: 100% }
@@ -58,39 +58,47 @@
 			renderer.setSize( window.innerWidth, window.innerHeight );
 			document.body.appendChild( renderer.domElement );
 
-			var material2 = new THREE.MeshPhongMaterial( { color: 0xf07f00, emissive: 0xFF0000, shininess:50, specular:0xfae1e1 } );
-			var material = new THREE.MeshBasicMaterial( { color: 0xFB9B0A } );
+			var material2 = new THREE.MeshPhongMaterial( { color: 0xFFE80C, emissive: 0xFF0000, shininess:50, specular:0xfae1e1 } );
 			var geometry2 = new THREE.SphereGeometry( 5, 32, 32 ); 
 			var mundo = new THREE.Mesh( geometry2, material2 );
 			
+			scene.add( mundo );
 
-
+			//declaracion de orbitas y sus radios
 			ellipse1 = createOrbit(10,6);
 			ellipse2 = createOrbit(20,12);
 			ellipse3 = createOrbit(30,18);
 			ellipse4 = createOrbit(40,24);
-			ellipse5 = createOrbit(45,27);
-			ellipse6 = createOrbit(55,33);
-			ellipse7 = createOrbit(65,39);
-			ellipse8 = createOrbit(2,2);
+			ellipse5 = createOrbit(50,30);
+			ellipse6 = createOrbit(60,36);
+			ellipse7 = createOrbit(70,42);
+			ellipse8 = createOrbit(80,48);
+
+			//declaracion orbitas de satelites
+			ellipse9 = createOrbit(2,2);
+			ellipse10 = createOrbit(3,3);
 
 
-			scene.add( mundo );
+			
 
 			//declaracion de planeta (color , diametro)
 			planeta1 = createLight( 0xffffff , 0.75 );
-			planeta2 = createLight( 0xff00ff , 1 );
-			planeta3 = createLight( 0x0AFB32 , 2.5 );
-			planeta4 = createLight( 0xC91515 , 1);	
+			planeta2 = createLight( 0xBE17B0 , 1.5 );
+			planeta3 = createLight( 0x3FC524 , 2.5 );
+			planeta4 = createLight( 0xFFE80C , 1.5);	
 			planeta5 = createLight( 0x00aaff , 0.5 );
 			planeta6 = createLight( 0x8D15C9 , 3.5 );
 			planeta7 = createLight( 0x52380E , 1.5 );
+			planeta8 = createLight( 0x1738BE , 1);
+
+			//declaracion de lunas (color , diametro)
 			luna1=createLight(0xffffff , 0.25);
+			luna2=createLight(0xffffff , 0.25);
+			luna3=createLight(0xffffff , 0.25);
 
 
-			//agrego orbitas
-			ellipse8.add(luna1);
-			planeta7.add(ellipse8);
+			
+			//agrego orbitas del Sol
 			mundo.add(ellipse1);
 			mundo.add(ellipse2);
 			mundo.add(ellipse3);
@@ -98,6 +106,11 @@
 			mundo.add(ellipse5);
 			mundo.add(ellipse6);
 			mundo.add(ellipse7);
+			mundo.add(ellipse8);
+
+			//agrego orbitas de planetas
+			planeta7.add(ellipse9);
+			planeta4.add(ellipse10);
 
 			//agrego planetas
 			mundo.add(planeta1);
@@ -107,16 +120,22 @@
 			mundo.add(planeta5);
 			mundo.add(planeta6);
 			mundo.add(planeta7);
+			mundo.add(planeta8);
+			
+			//agrego lunas
+			ellipse9.add(luna1);
+			ellipse10.add(luna2);
+			ellipse10.add(luna3);
 
 
-			camera.position.z = 70;
+			camera.position.z = 73;
 			var u = 0.0001 ;		
 			var render = function () {
 				requestAnimationFrame( render );
 				u = u + 0.01 ;
 
 				mundo.rotation.x = mundo.rotation.x + 0.005;
-
+				mundo.rotation.z= Math.PI / 8;
 				
 				planeta1.position.x = 10 * Math.cos(10*u);
 				planeta1.position.y = 6 * Math.sin(10*u);
@@ -138,20 +157,31 @@
 				//planeta4.position.z = 20 * Math.sin(3*u);
 
 
-				planeta5.position.x = 45 * Math.cos(4*u);  
-				planeta5.position.y = 27 * Math.sin(4*u);
+				planeta5.position.x = 50 * Math.cos(4*u);  
+				planeta5.position.y = 30 * Math.sin(4*u);
 				//planeta5.position.z = 25 * Math.sin(4*u);
 
-				planeta6.position.x = 55 * Math.cos(2*u);  
-				planeta6.position.y = 33 * Math.sin(2*u);
-				//planeta5.position.z = 25 * Math.sin(4*u);
+				planeta6.position.x = 60 * Math.cos(2*u);  
+				planeta6.position.y = 36 * Math.sin(2*u);
+				//planeta6.position.z = 25 * Math.sin(4*u);
 
-				planeta7.position.x = 65 * Math.cos(u);  
-				planeta7.position.y = 39 * Math.sin(u);
-				//planeta5.position.z = 25 * Math.sin(4*u);
+				planeta7.position.x = 70 * Math.cos(u);  
+				planeta7.position.y = 42 * Math.sin(u);
+				//planeta7.position.z = 25 * Math.sin(4*u);
 
-				luna1.position.x = ellipse8.position.x + 2*Math.cos(10*u);
-				luna1.position.y = ellipse8.position.y + 2*Math.sin(10*u);
+				planeta8.position.x = 80 * Math.cos(0.5*u);  
+				planeta8.position.y = 48 * Math.sin(0.5*u);
+				//planeta8.position.z = 25 * Math.sin(4*u);
+
+				luna1.position.x = ellipse9.position.x + 2*Math.cos(10*u);
+				luna1.position.y = ellipse9.position.y + 2*Math.sin(10*u);
+				
+				luna2.position.x = ellipse10.position.x + 3*Math.cos(10*u);
+				luna2.position.y = ellipse10.position.y + 3*Math.sin(10*u);
+
+				luna3.position.x = ellipse10.position.x + 3*(Math.cos(10*u+Math.PI ));
+				luna3.position.y = ellipse10.position.y + 3*(Math.sin(10*u+Math.PI ));
+
 				renderer.render(scene, camera);
 			};
 			
