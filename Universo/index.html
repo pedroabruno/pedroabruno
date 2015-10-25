@@ -95,7 +95,7 @@
 			luna1=createLight(0xffffff , 0.25);
 			luna2=createLight(0xffffff , 0.25);
 			luna3=createLight(0xffffff , 0.25);
-
+			luna4=createLight(0xffffff , 0.25);
 
 			
 			//agrego orbitas del Sol
@@ -126,7 +126,7 @@
 			ellipse9.add(luna1);
 			ellipse10.add(luna2);
 			ellipse10.add(luna3);
-
+			ellipse10.add(luna4);
 
 			camera.position.z = 73;
 			var u = 0.0001 ;		
@@ -176,12 +176,15 @@
 				luna1.position.x = ellipse9.position.x + 2*Math.cos(10*u);
 				luna1.position.y = ellipse9.position.y + 2*Math.sin(10*u);
 				
-				luna2.position.x = ellipse10.position.x + 3*Math.cos(10*u);
-				luna2.position.y = ellipse10.position.y + 3*Math.sin(10*u);
+				luna2.position.x = ellipse10.position.x + 3*Math.cos((10*u)+ (Math.PI));
+				luna2.position.y = ellipse10.position.y + 3*Math.sin((10*u)+ (Math.PI));
 
-				luna3.position.x = ellipse10.position.x + 3*(Math.cos(10*u+Math.PI ));
-				luna3.position.y = ellipse10.position.y + 3*(Math.sin(10*u+Math.PI ));
+				luna3.position.x = ellipse10.position.x + 3*Math.cos((10*u)+ (Math.PI*0.33) );
+				luna3.position.y = ellipse10.position.y + 3*Math.sin((10*u)+ (Math.PI*0.33) );
 
+
+				luna4.position.x = ellipse10.position.x + 3*Math.cos((10*u)+ (Math.PI*1.66) );
+				luna4.position.y = ellipse10.position.y + 3*Math.sin((10*u)+ (Math.PI*1.66) );
 				renderer.render(scene, camera);
 			};
 			
