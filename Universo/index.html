@@ -17,8 +17,19 @@
 		<script src="../js/Material.js"></script>
 		<script src="../js/MeshPhongMaterial.js"></script>
 		<script src="../js/Texture.js"></script>
+		<script src="../js/ParticleEngine.js"></script>
+		<script src="../js/Texture.js"></script>
+		<script src="../js/src/math/Vector3.js"></script>
 		<script>
 					
+					 //se crean estrellas
+					var particles = new THREE.Geometry;
+					 for (i = 0; i < 2000; i++) { 
+    				var particle = new THREE.Vector3(Math.random() * 1700 - 250, Math.random() * 1900 - 250, Math.random() * 1800 - 250);
+    				particles.vertices.push(particle);
+      				}
+    				var particleTexture = THREE.ImageUtils.loadTexture('../js/Texture/snowflake.png');
+    				var particleMaterial2 = new THREE.ParticleBasicMaterial({ map: particleTexture, size: 2 });
 
 					//agregar parametro tamano
 					function createLight( color , tamano ) {  //Funcion crear PLANETA
@@ -58,7 +69,12 @@
 			renderer.setSize( window.innerWidth, window.innerHeight );
 			document.body.appendChild( renderer.domElement );
 
-			var material2 = new THREE.MeshPhongMaterial( { color: 0xFFE80C, emissive: 0xFF0000, shininess:50, specular:0xfae1e1 } );
+			// agregar texturas
+			var textura1 = THREE.ImageUtils.loadTexture( 'planeta1.jpeg' );
+			var material1 = new THREE.MeshBasicMaterial( { map: textura1 } );
+			// aca termina
+
+			var material2 = new THREE.MeshPhongMaterial( { color: 0xFFE80C, emissive: 0xFF0000, shininess:50, specular:0xfae1e1} );
 			var geometry2 = new THREE.SphereGeometry( 5, 32, 32 ); 
 			var mundo = new THREE.Mesh( geometry2, material2 );
 			
@@ -128,6 +144,11 @@
 			ellipse10.add(luna3);
 			ellipse10.add(luna4);
 
+
+			//se agrega motor de estrellas
+			var particleSystem = new THREE.ParticleSystem(particles, particleMaterial2);
+			scene.add(particleSystem);
+
 			camera.position.z = 73;
 			var u = 0.0001 ;		
 			var render = function () {
@@ -186,6 +207,9 @@
 				luna4.position.x = ellipse10.position.x + 3*Math.cos((10*u)+ (Math.PI*1.66) );
 				luna4.position.y = ellipse10.position.y + 3*Math.sin((10*u)+ (Math.PI*1.66) );
 				renderer.render(scene, camera);
+
+				//movimiento estrellas
+				 particleSystem.rotation.x += 0.005;
 			};
 			
 			render();
