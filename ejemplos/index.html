@@ -12,9 +12,19 @@
     <script src="../js/Texture.js"></script>
     <script src="../js/SphereGeometry.js"></script>
     <script src="../js/src/math/Vector3.js"></script>
+    <script src="../js/src/renderers/shaders/ShaderLib.js"></script>
+    <script src="../js/src/materials/ShaderMaterial.js"></script>
+    <script src="../js/src/materials/Material.js"></script>
    <script>
   
 
+ 
+
+
+
+
+
+//particulas
       
       var particles = new THREE.Geometry;
     for (i = 0; i < 2000; i++) { 
@@ -28,7 +38,8 @@
 
 
       var scene = new THREE.Scene();
-      var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
+      var sceneCubo = new THREE.Scene();
+      var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 10000 );
 
       var renderer = new THREE.WebGLRenderer();
       renderer.setSize( window.innerWidth, window.innerHeight );
@@ -40,25 +51,51 @@
       
       var material1 = new THREE.MeshBasicMaterial( { map: texture } );
 
-      var geometry = new THREE.BoxGeometry( 1, 1, 1 );
-      var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
       var cube = new THREE.Mesh( esfera, material1);
       
-      scene.add( cube );
 
       var particleSystem = new THREE.ParticleSystem(particles, particleMaterial2);
- 
-scene.add(particleSystem);
+  
 
-      camera.position.z = 5;
+
+  // Skybox
+  //cubemap
+
+        var path = "../ejemplos/";
+        var format = '.png';
+        var urls = [
+          path + 'arriba' + format, path + 'abajo' + format,
+          path + 'frente' + format, path + 'derecha' + format,
+          path + 'atras' + format, path + 'izquierda' + format
+        ];
+
+        var textureCube = THREE.ImageUtils.loadTextureCube( urls, THREE.CubeRefractionMapping );
+
+        var shader = THREE.ShaderLib[ "cube" ];
+        shader.uniforms[ "tCube" ].value = textureCube;
+
+        var material4 = new THREE.ShaderMaterial( {
+
+          fragmentShader: shader.fragmentShader,
+          vertexShader: shader.vertexShader,
+          uniforms: shader.uniforms,
+          depthWrite: false,
+          side: THREE.BackSide
+
+        } );
+        mesh = new THREE.Mesh( new THREE.BoxGeometry( 1000, 1000, 1000 ), material4 );
+//scene.add(particleSystem);
+scene.add(mesh);
+
+      camera.position.z = 0;
       
       var render = function () {
         requestAnimationFrame( render );
 
-        cube.rotation.y += 0.025;
-
-        particleSystem.rotation.y += 0.0025;
-
+        
+        //particleSystem.rotation.x += 0.005;
+        mesh.rotation.y += 0.005;
+        camera.rotation.x += 0.005
         renderer.render(scene, camera);
       };
 

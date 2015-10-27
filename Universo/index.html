@@ -22,6 +22,11 @@
 		<script src="../js/src/math/Vector3.js"></script>
 		<script>
 					
+					 
+
+					 
+
+
 					 //se crean estrellas
 					var particles = new THREE.Geometry;
 					 for (i = 0; i < 2000; i++) { 
@@ -32,7 +37,7 @@
     				var particleMaterial2 = new THREE.ParticleBasicMaterial({ map: particleTexture, size: 2 });
 
 					//agregar parametro tamano
-					function createLight( color , tamano ) {  //Funcion crear PLANETA
+					function createLight( color , tamano , materiali) {  //Funcion crear PLANETA
 
 					var planeta = new THREE.PointLight( color, 1, 30 );
 					planeta.castShadow = true;
@@ -45,8 +50,8 @@
 					planeta.shadowDarkness = 0.5;
 
 					var forma = new THREE.SphereGeometry( tamano , 32, 32 );
-					var material = new THREE.MeshPhongMaterial( { color: color , emissive: color, shininess:50, specular:0xfae1e1} );
-					var planet = new THREE.Mesh( forma, material );
+					var material = new THREE.MeshPhongMaterial( { color: color , emissive: color, shininess:10, specular:0xfae1e1 } );
+					var planet = new THREE.Mesh( forma, materiali );
 					planeta.add( planet );
 
 					return planeta
@@ -56,7 +61,7 @@
 					var curve = new THREE.EllipseCurve(	0,  0, x, y, 0,  2 * Math.PI,false,0);
 					var path = new THREE.Path( curve.getPoints( 50 ) );
 					var geometry3 = path.createPointsGeometry( 50 );
-					var material3 = new THREE.MeshPhongMaterial( { color : 0xf7dc0e , opacity: 0.25, emissive:0xf7dc0e ,transparent: true} );
+					var material3 = new THREE.MeshPhongMaterial( { color : 0xf7dc0e , opacity: 0.10, emissive:0xf7dc0e ,transparent: true} );
 					var ellipse = new THREE.Line( geometry3, material3 );
 					return ellipse;
 
@@ -70,8 +75,34 @@
 			document.body.appendChild( renderer.domElement );
 
 			// agregar texturas
-			var textura1 = THREE.ImageUtils.loadTexture( 'planeta1.jpeg' );
-			var material1 = new THREE.MeshBasicMaterial( { map: textura1 } );
+
+			var texture10 = THREE.ImageUtils.loadTexture( '../js/Texture/planeta1.jpg' );
+			var material10 = new THREE.MeshBasicMaterial( { map: texture10 } );
+
+			var texture9 = THREE.ImageUtils.loadTexture( '../js/Texture/planeta2.jpg' );
+			var material9 = new THREE.MeshBasicMaterial( { map: texture9 } );
+
+			var texture3 = THREE.ImageUtils.loadTexture( '../js/Texture/planeta3.jpg' );
+			var material3 = new THREE.MeshBasicMaterial( { map: texture3 } );
+
+			var texture4 = THREE.ImageUtils.loadTexture( '../js/Texture/planeta4.jpg' );
+			var material4 = new THREE.MeshBasicMaterial( { map: texture4 } );
+
+			var texture5 = THREE.ImageUtils.loadTexture( '../js/Texture/planeta5.jpg' );
+			var material5 = new THREE.MeshBasicMaterial( { map: texture5 } );
+
+			var texture6 = THREE.ImageUtils.loadTexture( '../js/Texture/planeta6.jpg' );
+			var material6 = new THREE.MeshBasicMaterial( { map: texture6 } );
+
+			var texture7 = THREE.ImageUtils.loadTexture( '../js/Texture/planeta7.jpg' );
+			var material7 = new THREE.MeshBasicMaterial( { map: texture7 } );
+
+			var texture8 = THREE.ImageUtils.loadTexture( '../js/Texture/planeta8.jpg' );
+			var material8 = new THREE.MeshBasicMaterial( { map: texture8 } );
+
+			var textureluna = THREE.ImageUtils.loadTexture( '../js/Texture/planetaluna.jpg' );
+			var materialluna = new THREE.MeshBasicMaterial( { map: textureluna } );
+
 			// aca termina
 
 			var material2 = new THREE.MeshPhongMaterial( { color: 0xFFE80C, emissive: 0xFF0000, shininess:50, specular:0xfae1e1} );
@@ -98,20 +129,20 @@
 			
 
 			//declaracion de planeta (color , diametro)
-			planeta1 = createLight( 0xffffff , 0.75 );
-			planeta2 = createLight( 0xBE17B0 , 1.5 );
-			planeta3 = createLight( 0x3FC524 , 2.5 );
-			planeta4 = createLight( 0xFFE80C , 1.5);	
-			planeta5 = createLight( 0x00aaff , 0.5 );
-			planeta6 = createLight( 0x8D15C9 , 3.5 );
-			planeta7 = createLight( 0x52380E , 1.5 );
-			planeta8 = createLight( 0x1738BE , 1);
+			planeta1 = createLight( 0xffffff , 0.75, material10 );
+			planeta2 = createLight( 0xBE17B0 , 1.5 , material9 );
+			planeta3 = createLight( 0xbe1711 , 2.5 , material3 );
+			planeta4 = createLight( 0xFFE80C , 1.5 , material4 );	
+			planeta5 = createLight( 0x00aaff , 1.25 , material5 );
+			planeta6 = createLight( 0x8D15C9 , 3.5 , material6 );
+			planeta7 = createLight( 0x52380E , 1.5 , material7 );
+			planeta8 = createLight( 0x1738BE , 1   , material8 );
 
 			//declaracion de lunas (color , diametro)
-			luna1=createLight(0xffffff , 0.25);
-			luna2=createLight(0xffffff , 0.25);
-			luna3=createLight(0xffffff , 0.25);
-			luna4=createLight(0xffffff , 0.25);
+			luna1=createLight(0xffffff , 0.25 , materialluna );
+			luna2=createLight(0xffffff , 0.25 , materialluna );
+			luna3=createLight(0xffffff , 0.25 , materialluna );
+			luna4=createLight(0xffffff , 0.25 , materialluna );
 
 			
 			//agrego orbitas del Sol
@@ -157,42 +188,61 @@
 
 				mundo.rotation.x = mundo.rotation.x + 0.005;
 				mundo.rotation.z= Math.PI / 8;
+
+
+				mundo.rotation.y += mundo.rotation.y;
+
 				
 				planeta1.position.x = 10 * Math.cos(10*u);
 				planeta1.position.y = 6 * Math.sin(10*u);
-				//planeta1.position.z = 7 * Math.sin(10*u);	
+				//planeta1.position.z = 7 * Math.sin(10*u);
+				planeta1.rotation.y += planeta1.rotation.y;
+
+
 				
 				
 				planeta2.position.x =  20 * Math.cos(5*u);
 				planeta2.position.y =  12 * Math.sin(5*u);
-				//planeta2.position.z =  10 * Math.sin(5*u);	
+				//planeta2.position.z =  10 * Math.sin(5*u);
+				planeta2.rotation.y += planeta2.rotation.y;	
 				
 				
 				planeta3.position.x =  30 * Math.cos(u);
 				planeta3.position.y =  18 * Math.sin(u);
-				//planeta3.position.z =  15 * Math.sin(u);	
+				//planeta3.position.z =  15 * Math.sin(u);
+				planeta3.rotation.y += planeta3.rotation.y;	
 				
 				
 				planeta4.position.x = 40 * Math.cos(3*u);  
 				planeta4.position.y = 24 * Math.sin(3*u);
 				//planeta4.position.z = 20 * Math.sin(3*u);
-
+				planeta4.rotation.y += planeta4.rotation.y;
 
 				planeta5.position.x = 50 * Math.cos(4*u);  
 				planeta5.position.y = 30 * Math.sin(4*u);
 				//planeta5.position.z = 25 * Math.sin(4*u);
+				planeta5.rotation.y += planeta5.rotation.y;
+
 
 				planeta6.position.x = 60 * Math.cos(2*u);  
 				planeta6.position.y = 36 * Math.sin(2*u);
 				//planeta6.position.z = 25 * Math.sin(4*u);
+				planeta6.rotation.y += planeta6.rotation.y;
+
+
 
 				planeta7.position.x = 70 * Math.cos(u);  
 				planeta7.position.y = 42 * Math.sin(u);
 				//planeta7.position.z = 25 * Math.sin(4*u);
+				planeta7.rotation.y += planeta7.rotation.y;
+
+
 
 				planeta8.position.x = 80 * Math.cos(0.5*u);  
 				planeta8.position.y = 48 * Math.sin(0.5*u);
 				//planeta8.position.z = 25 * Math.sin(4*u);
+				planeta8.rotation.y += planeta8.rotation.y;
+
 
 				luna1.position.x = ellipse9.position.x + 2*Math.cos(10*u);
 				luna1.position.y = ellipse9.position.y + 2*Math.sin(10*u);
